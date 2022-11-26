@@ -10,10 +10,10 @@ pipeline {
   stages {
 
     stage('Checkout Source') {
-      steps {
-        git 'https://github.com/praveen1994dec/kubernetes_Jenkins_deployment.git'
-        branch 'main'
-      }
+    //   steps {
+    //     git 'https://github.com/praveen1994dec/kubernetes_Jenkins_deployment.git'
+    //     branch 'main'
+    //   }
     }
 
     stage('Build image') {
