@@ -4,6 +4,10 @@ pipeline {
     dockerimagename = "praveensingam1994/nodeapp"
     dockerImage = ""
   }
+  tools {
+    docker "MyDocker"
+  }
+
 
   agent any
 
@@ -16,10 +20,10 @@ pipeline {
     //   }
   //  }
     
-     stage('Initialize'){
-        def dockerHome = tool 'MyDocker'
-        env.PATH = "${dockerHome}/bin:${env.PATH}"
-    }
+//      stage('Initialize'){
+//         def dockerHome = tool 'MyDocker'
+//         env.PATH = "${dockerHome}/bin:${env.PATH}"
+//     }
     
     stage('Build image') {
       steps{
