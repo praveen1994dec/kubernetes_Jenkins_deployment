@@ -12,17 +12,10 @@ pipeline {
   agent any
 
   stages {
-
-    //stage('Checkout Source') {
-    //   steps {
-    //     git 'https://github.com/praveen1994dec/kubernetes_Jenkins_deployment.git'
-    //     branch 'main'
-    //   }
-  //  }
     
-     stage('Initialize'){
-        def docker = tool 'MyDocker'
-        env.PATH = "${docker}/bin:${env.PATH}"
+    stage('Initialize'){
+      def docker = tool 'MyDocker'
+      env.PATH = "${docker}/bin:${env.PATH}"
     }
     
     stage('Build image') {
