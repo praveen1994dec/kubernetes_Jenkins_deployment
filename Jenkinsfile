@@ -15,7 +15,12 @@ pipeline {
     //     branch 'main'
     //   }
   //  }
-
+    
+     stage('Initialize'){
+        def dockerHome = tool 'MyDocker'
+        env.PATH = "${dockerHome}/bin:${env.PATH}"
+    }
+    
     stage('Build image') {
       steps{
         script {
