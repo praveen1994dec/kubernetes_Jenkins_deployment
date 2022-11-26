@@ -1,7 +1,7 @@
 pipeline {
 agent any
 environment {
-DOCKER_HOME = tool name: 'dockerTool', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
+DOCKER_HOME = tool name: 'MyDocker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
 }
 stages {
 stage('Example') {
