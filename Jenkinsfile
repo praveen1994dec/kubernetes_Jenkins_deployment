@@ -15,7 +15,9 @@ pipeline {
                 script {
                     def dockerHome = tool 'MyDocker'
                     env.PATH = "${dockerHome}/bin:${env.PATH}"
-                    eval $(minikube -p minikube docker-env)       
+                    sh '''#!/bin/bash
+                    eval $(minikube -p minikube docker-env)
+                    '''
           
                 }
       }
