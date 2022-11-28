@@ -27,26 +27,26 @@ pipeline {
       }
     }
 
-//     stage('Pushing Image') {
-//       environment {
-//                registryCredential = 'dockerhubcred'
-//            }
-//       steps{
-//         script {
-//           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-//             dockerImage.push("latest")
-//           }
-//         }
-//       }
-//     }
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockercred'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
+        }
+      }
+    }
 
-//     stage('Deploying App to Kubernetes') {
-//       steps {
-//         script {
-//           kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetescd")
-//         }
-//       }
-//     }
+    stage('Deploying App to Kubernetes') {
+      steps {
+        script {
+          kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
+        }
+      }
+    }
 
   }
 
