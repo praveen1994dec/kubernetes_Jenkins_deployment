@@ -42,16 +42,16 @@ pipeline {
       }
     }
 
-    stage('Deploying App to Kubernetes') {
-      steps {
-        script {
-          sh '''#!/bin/bash
-          eval $(minikube -p minikube docker-env)
-          '''
-          kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
-        }
-      }
-    }
+//     stage('Deploying App to Kubernetes') {
+//       steps {
+//         script {
+//           sh '''#!/bin/bash
+//           eval $(minikube -p minikube docker-env)
+//           '''
+//           kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
+//         }
+//       }
+//     }
 
   }
 
