@@ -24,7 +24,6 @@ pipeline {
       steps{
         script {
           def dockerImage = docker.build dockerimagename
-          echo "$dockerImage"
         }
       }
     }
