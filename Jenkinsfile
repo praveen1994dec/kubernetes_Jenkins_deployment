@@ -14,8 +14,7 @@ pipeline {
          echo 'Building Container..'
                  script {
                      def dockerHome = tool 'MyDocker'
-                       env.PATH = "${dockerHome}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"
-                       
+                     env.PATH = "${dockerHome}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"             
           
                  }
        }
@@ -24,7 +23,8 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          dockerImage = docker.build dockerimagename
+          def dockerImage = docker.build dockerimagename
+          echo "$dockerImage"
         }
       }
     }
@@ -32,15 +32,14 @@ pipeline {
     stage('Pushing Image') {
       environment {
                registryCredential = 'dockerhubcred'
-               def dockerHome = tool 'MyDocker'
-               env.PATH = "${dockerHome}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"
+
            }
       steps{
         script {
           sh "docker images"
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-          dockerImage.push("${dockerimagename}")
-          }
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) 
+          dockerImage.push()
+          dockerImage.push('latest')
         }
       }
     }
