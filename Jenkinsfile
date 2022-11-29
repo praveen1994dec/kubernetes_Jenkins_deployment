@@ -23,7 +23,7 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          def dockerImage = docker.build dockerimagename
+          dockerImage = docker.build dockerimagename
         }
       }
     }
@@ -36,9 +36,7 @@ pipeline {
       steps{
         script {
           sh "docker images"
-          def dockerImage = docker.build dockerimagename
           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) 
-          dockerImage.push()
           dockerImage.push('latest')
         }
       }
