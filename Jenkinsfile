@@ -37,7 +37,7 @@ pipeline {
         script {
           sh "docker images"
           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-          dockerImage.push("latest")
+          dockerImage.push("praveensingam1994/nodeapp:latest")
           }
         }
       }
