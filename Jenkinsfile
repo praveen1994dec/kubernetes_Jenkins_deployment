@@ -3,33 +3,22 @@ pipeline {
   environment {
     dockerimagename = "praveensingam1994/nodeapp"
     dockerImage = ""
-    
   }
 
   agent any
-  stages {
-    
-     stage('Build Container') {
-       steps {
-         echo 'Building Container..'
-                 script {
-                     def dockerHome = tool 'MyDocker'
-                     env.PATH = "${dockerHome}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"             
-          
-                 }
-       }
-     }
-    
-    stage('Build image') {
-            environment {
-               registryCredential = 'dockerhubcred'
 
-           }
+  stages {
+
+//     stage('Checkout Source') {
+//       steps {
+//         git 'https://github.com/praveen1994dec/kubernetes_Jenkins_deployment.git'
+//       }
+//     }
+
+    stage('Build image') {
       steps{
         script {
           dockerImage = docker.build dockerimagename
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) 
-          dockerImage.push('latest')
         }
       }
     }
@@ -37,13 +26,12 @@ pipeline {
     stage('Pushing Image') {
       environment {
                registryCredential = 'dockerhubcred'
-
            }
       steps{
         script {
-          sh "docker images"
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) 
-          dockerImage.push('latest')
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
         }
       }
     }
@@ -51,9 +39,6 @@ pipeline {
 //     stage('Deploying App to Kubernetes') {
 //       steps {
 //         script {
-//           sh '''#!/bin/bash
-//           eval $(minikube -p minikube docker-env)
-//           '''
 //           kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
 //         }
 //       }
