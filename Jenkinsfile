@@ -21,6 +21,10 @@ pipeline {
      }
     
     stage('Build image') {
+            environment {
+               registryCredential = 'dockerhubcred'
+
+           }
       steps{
         script {
           dockerImage = docker.build dockerimagename
