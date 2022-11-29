@@ -16,6 +16,7 @@ pipeline {
 //                 script {
 //                     def dockerHome = tool 'MyDocker'
 //                     env.PATH = "${dockerHome}/bin:${env.PATH}"
+                       env.PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
           
 //                 }
 //       }
