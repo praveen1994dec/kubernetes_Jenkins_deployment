@@ -3,6 +3,7 @@ pipeline {
   environment {
     dockerimagename = "praveensingam1994/nodeapp"
     dockerImage = ""
+    
   }
 
   agent any
@@ -15,9 +16,6 @@ pipeline {
                 script {
                     def dockerHome = tool 'MyDocker'
                     env.PATH = "${dockerHome}/bin:${env.PATH}"
-                    sh '''#!/bin/bash
-                    eval $(minikube -p minikube docker-env)
-                    '''
           
                 }
       }
@@ -38,7 +36,7 @@ pipeline {
       steps{
         script {
           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
+          dockerImage.push("latest")
           }
         }
       }
@@ -47,6 +45,9 @@ pipeline {
     stage('Deploying App to Kubernetes') {
       steps {
         script {
+          sh '''#!/bin/bash
+          eval $(minikube -p minikube docker-env)
+          '''
           kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
         }
       }
