@@ -32,6 +32,8 @@ pipeline {
     stage('Pushing Image') {
       environment {
                registryCredential = 'dockerhubcred'
+               def dockerHome = tool 'MyDocker'
+               env.PATH = "${dockerHome}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"
            }
       steps{
         script {
