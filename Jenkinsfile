@@ -24,6 +24,8 @@ pipeline {
       steps{
         script {
           dockerImage = docker.build dockerimagename
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) 
+          dockerImage.push('latest')
         }
       }
     }
