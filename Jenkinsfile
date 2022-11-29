@@ -15,8 +15,8 @@ pipeline {
 //         echo 'Building Container..'
 //                 script {
 //                     def dockerHome = tool 'MyDocker'
-//                     env.PATH = "${dockerHome}/bin:${env.PATH}"
-                       env.PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+                       env.PATH = "${dockerHome}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"
+                       
           
 //                 }
 //       }
