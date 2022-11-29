@@ -7,19 +7,19 @@ pipeline {
   }
 
   agent any
-
+  tools {dockerTool  "MyDocker" } 
   stages {
     
-    stage('Build Container') {
-      steps {
-        echo 'Building Container..'
-                script {
-                    def dockerHome = tool 'MyDocker'
-                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+//     stage('Build Container') {
+//       steps {
+//         echo 'Building Container..'
+//                 script {
+//                     def dockerHome = tool 'MyDocker'
+//                     env.PATH = "${dockerHome}/bin:${env.PATH}"
           
-                }
-      }
-    }
+//                 }
+//       }
+//     }
     
     stage('Build image') {
       steps{
