@@ -1,39 +1,58 @@
-pipeline{
+pipeline {
+  def dockerImage
+  environment {
+    dockerimagename = "praveensingam1994/nodeapp"
+    
+  }
+  
+  agent any
 
-	agent any
+  stages {
 
-	environment {
-		registryCredential = 'dockerhubcred'
-	}
+//     stage('Checkout Source') {
+//       steps {
+//         git 'https://github.com/praveen1994dec/kubernetes_Jenkins_deployment.git'
+//       }
+//     }
 
-	stages {
+    stage('Build image') {
+      steps{
+        script {
+          dockerImage = docker.build dockerimagename
+        }
+      }
+    }
+      
+          stage('Build B') {
+             steps {
+                 build job: "Sonar_Project", wait: true
+                    }
+                }
 
-		stage('Build') {
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockerhubcred'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+          dockerImage.push("${env.BUILD_NUMBER}")            
+          dockerImage.push("latest")        
+          }
+        }
+      }
+    }
 
-			steps {
-				sh 'docker build -t praveensingam1994/nodeapp:latest .'
-			}
-		}
+//     stage('Deploying App to Kubernetes') {
+//       steps {
+//         script {
+//           kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
+//         }
+//       }
+//     }
 
-		stage('Login') {
-
-			steps {
-				sh 'docker login -u "praveensingam1994" --password registryCredential'
-			}
-		}
-
-		stage('Push') {
-
-			steps {
-				sh 'docker push praveensingam1994/nodeapp:latest'
-			}
-		}
-	}
-
-	post {
-		always {
-			sh 'docker logout'
-		}
-	}
+  }
 
 }
+
+
