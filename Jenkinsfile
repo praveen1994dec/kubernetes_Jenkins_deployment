@@ -1,10 +1,10 @@
 pipeline {
-
+  def dockerImage
   environment {
     dockerimagename = "praveensingam1994/nodeapp"
-    dockerImage = ""
+    
   }
-
+  
   agent any
 
   stages {
@@ -36,7 +36,8 @@ pipeline {
       steps{
         script {
           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
+          dockerImage.push("${env.BUILD_NUMBER}")            
+          dockerImage.push("latest")        
           }
         }
       }
