@@ -23,10 +23,11 @@ pipeline {
       }
     }
       
-     stage ('Starting Sonar job') {
-    //build job: 'Sonar_Project', parameters: [[$class: 'StringParameterValue', name: 'systemname', value: systemname]]
-         build job: 'Sonar_Project'
-}
+          stage('Build B') {
+             steps {
+                 build job: "Sonar_Project", wait: true
+                    }
+                }
 
     stage('Pushing Image') {
       environment {
