@@ -1,8 +1,7 @@
 pipeline {
-  def dockerImage
   environment {
     dockerimagename = "praveensingam1994/nodeapp"
-    
+    dockerImage = ""
   }
   
   agent any
@@ -14,6 +13,16 @@ pipeline {
 //         git 'https://github.com/praveen1994dec/kubernetes_Jenkins_deployment.git'
 //       }
 //     }
+        
+    stage('Build Container') {
+      steps {
+        echo 'Building Container..'
+                script {
+                    def dockerHome = tool 'MyDocker'
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                }
+      }
+    }
 
     stage('Build image') {
       steps{
@@ -54,5 +63,3 @@ pipeline {
   }
 
 }
-
-
