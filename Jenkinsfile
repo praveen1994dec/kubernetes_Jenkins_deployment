@@ -1,31 +1,62 @@
-node {    
-      def app     
-      stage('Clone repository') {               
-             
-            checkout scm    
-      }     
-      stage('Build image') {         
-       
-            app = docker.build("praveensingam1994/test")    
-       }     
-      stage('Test image') {           
-            app.inside {            
-             
-             sh 'echo "Tests passed"'        
-            }    
-        }     
-       stage('Push image') {
-       
-        environment {
+pipeline {
+  environment {
+    dockerimagename = "praveensingam1994/nodeapp"
+    dockerImage = ""
+  }
+  
+  agent any
+
+  stages {
+
+//     stage('Checkout Source') {
+//       steps {
+//         git 'https://github.com/praveen1994dec/kubernetes_Jenkins_deployment.git'
+//       }
+//     }
+        
+     stage('Initialize'){
+           steps{
+        def dockerHome = tool 'MyDocker'
+        env.PATH = "${dockerHome}/bin:${env.PATH}"
+           }
+    }
+
+    stage('Build image') {
+      steps{
+        script {
+          dockerImage = docker.build dockerimagename
+        }
+      }
+    }
+      
+          stage('Build B') {
+             steps {
+                 build job: "Sonar_Project", wait: true
+                    }
+                }
+
+    stage('Pushing Image') {
+      environment {
                registryCredential = 'dockerhubcred'
            }
       steps{
         script {
           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-          app.push("${env.BUILD_NUMBER}")            
-          app.push("latest")        
+          dockerImage.push("${env.BUILD_NUMBER}")            
+          dockerImage.push("latest")        
           }
         }
-      } 
-           }
-        }
+      }
+    }
+
+//     stage('Deploying App to Kubernetes') {
+//       steps {
+//         script {
+//           kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
+//         }
+//       }
+//     }
+
+  }
+
+}
