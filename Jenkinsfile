@@ -3,7 +3,7 @@ pipeline{
 	agent any
 
 	environment {
-		DOCKERHUB_CREDENTIALS=credentials('dockerhubcred')
+		registryCredential = 'dockerhubcred'
 	}
 
 	stages {
@@ -18,7 +18,7 @@ pipeline{
 		stage('Login') {
 
 			steps {
-				sh 'docker login -u "praveensingam1994" --password ${DOCKERHUB_CREDENTIALS}'
+				sh 'docker login -u "praveensingam1994" --password ${registryCredential}'
 			}
 		}
 
