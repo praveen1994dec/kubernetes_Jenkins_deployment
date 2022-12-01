@@ -1,12 +1,56 @@
-node {
-    
-//     stage('Clone repo') {
-//         git branch: "develop", url: "git@github.com:praveen1994dec/kubernetes_Jenkins_deployment.git", credentialsId: "githubcred"
+pipeline {
+
+  environment {
+    dockerimagename = "praveensingam1994/nodeapp"
+    dockerImage = ""
+  }
+
+  agent any
+
+  stages {
+
+//     stage('Checkout Source') {
+//       steps {
+//         git 'https://github.com/praveen1994dec/kubernetes_Jenkins_deployment.git'
+//       }
 //     }
-    
-    stage('SonarTests') {
-        docker.image('newtmitch/sonar-scanner').inside('-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""') {
-            sh "/usr/local/bin/sonar-scanner --version"
+
+    stage('Build image') {
+      steps{
+        script {
+          dockerImage = docker.build dockerimagename
         }
+      }
     }
+      
+     stage ('Starting Sonar job') {
+    //build job: 'Sonar_Project', parameters: [[$class: 'StringParameterValue', name: 'systemname', value: systemname]]
+         build job: 'Sonar_Project'
 }
+
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockerhubcred'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
+        }
+      }
+    }
+
+//     stage('Deploying App to Kubernetes') {
+//       steps {
+//         script {
+//           kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
+//         }
+//       }
+//     }
+
+  }
+
+}
+
+
