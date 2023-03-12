@@ -38,19 +38,19 @@ pipeline {
                     }
                 }
 
-    stage('Pushing Image') {
-      environment {
-               registryCredential = 'dockerhubcred'
-           }
-      steps{
-        script {
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-          dockerImage.push("${env.BUILD_NUMBER}")            
-          dockerImage.push("latest")        
-          }
-        }
-      }
-    }
+//     stage('Pushing Image') {
+//       environment {
+//                registryCredential = 'dockerhubcred'
+//            }
+//       steps{
+//         script {
+//           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+//           dockerImage.push("${env.BUILD_NUMBER}")            
+//           dockerImage.push("latest")        
+//           }
+//         }
+//       }
+//     }
 
 //     stage('Deploying App to Kubernetes') {
 //       steps {
